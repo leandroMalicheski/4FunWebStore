@@ -1,0 +1,1 @@
+<div class="navbar-bottom" style="background-color: #262626; height: 35px"></div>

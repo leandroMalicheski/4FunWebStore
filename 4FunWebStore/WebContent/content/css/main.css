@@ -1,0 +1,70 @@
+.my-panel .panel-heading {
+	background-color: #262626;
+	color: #777; 
+	font-family: impact; 
+	font-size: large; 
+	text-align: center;
+}
+.my-panel .panel-body {
+	background-color: #DDD;
+}
+
+.my-panel .panel-footer{
+	background-color: #262626; 
+	font-family: impact; 
+	font-size: medium; 
+	text-align: center;
+}
+
+.my-panel .panel-footer .footer-text{
+	color: #777;
+}
+
+.my-btn {
+	background-color: #DDD;
+	font-family: impact; 
+	font-size: medium; 
+	text-align: center;
+	border-color: #262626;
+}
+
+.my-btn-dark {
+	background-color: #262626;
+	font-family: impact; 
+	font-size: medium; 
+	text-align: center;
+	color: #777;
+}
+
+.brand-text{
+	font-family: impact; 
+	font-size: large; 
+	font-style: italic;
+}
+
+.my-addon{
+	background-color: #DDD;
+	border-color: #262626;
+	color: #262626;
+}
+.my-input{
+	border-color: #262626;
+	color: #262626;
+}
+
+.table-image{
+	max-width: 50px; 
+	max-height: 50px;
+}
+
+.my-table{
+	border: solid; 
+	border-color: #ddd;
+}
+
+.total-text{
+	font-family: impact; 
+	font-size: medium; 
+	color: #262626;
+	float: right;
+}
