@@ -20,9 +20,8 @@
 <body>
 	<%@ include file="content/pages/menuHeader.jsp" %> 
 	<div class="container">    
-	  <div class="row">
 	<% 
-		ProdutoDAO produtoDAO = new ProdutoDAO();
+		ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
 		ArrayList<Produto> listaProdutos = produtoDAO.list();
 		if(request.getAttribute("produtoAdded") != null){ %>
 		<div class="alert alert-success">
@@ -46,7 +45,6 @@
 	    </div>
 	<%}%>
 	  </div>
-	</div>
 	<%@ include file="/content/pages/bottom.jsp" %> 
 </body>
 </html>

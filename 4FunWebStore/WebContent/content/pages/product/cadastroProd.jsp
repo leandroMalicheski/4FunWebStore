@@ -21,20 +21,26 @@
 			<strong><span class="glyphicon glyphicon-ok"></span> Produto Cadastrado!</strong>
 		</div>
 		<%}%>
+	
 		<div class="row panel">
-			<form role="form">
+			<form method="POST" action="/4FunWebStore/produtoServlet" role="form">
 				<div class="input-group">
 				  <span class="input-group-addon my-addon" id="tituloLabel">Titulo</span>
-				  <input id="titulo" type="text" class="form-control my-input" placeholder="4Fun" aria-describedby="tituloLabel" required>
+				  <input id="titulo" name="titulo" type="text" class="form-control my-input" placeholder="4Fun" aria-describedby="tituloLabel" required>
 				</div>
 				<div class="input-group">
 				  <span class="input-group-addon my-addon" id="fileLabel">Selecione a Imagem</span>
-				  <input id="file" type="file" class="form-control my-input" aria-describedby="fileLabel" required>
-				</div>				
+				  <input id="file" type="file" class="form-control my-input" aria-describedby="fileLabel">
+				</div>
+				<div class="input-group">
+				  <span class="input-group-addon my-addon" id="fileLabel"><input type="radio" name="imagemg" id="imagemg" value="/4FunWebStore/content/images/capas/default.png"></span>
+				  <span class="form-control my-input" aria-describedby="fileLabel">Utilizar a Imagem Generica</span>
+				</div>					
 				<div class="input-group">
 				  <span class="input-group-addon my-addon" id="valorLabel">Valor R$</span>
-				  <input id="valor" type="number" class="form-control my-input" placeholder="300,99" aria-describedby="valorLabel" required>
+				  <input id="valor" name="valor" type="number" step="0.01" class="form-control my-input" placeholder="300,99" aria-describedby="valorLabel" required>
 				</div><br>
+				<input type="hidden" name="action" value="add">
 				<button type="submit" class="btn btn-default btn-block my-btn">Cadastrar</button>
 			</form>
 	    </div>

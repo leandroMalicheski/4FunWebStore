@@ -31,7 +31,7 @@
 				<div class="row panel">
 			   		<form action="/4FunWebStore/usuarioServlet" method="POST">
 				  		<input type="text" class="form-control" name="login" id="login" placeholder="Login">		
-				  		<input type="text" class="form-control" name="senha" id="senha" placeholder="Senha">
+				  		<input type="password" class="form-control" name="senha" id="senha" placeholder="Senha">
 				  		<input type="hidden" name="action" value="login">
 						<button type="submit" class="btn btn-default btn-block my-btn">Login</button>
 					</form>

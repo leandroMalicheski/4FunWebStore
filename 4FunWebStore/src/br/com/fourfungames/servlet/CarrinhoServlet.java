@@ -37,7 +37,7 @@ public class CarrinhoServlet extends HttpServlet {
 		int produtoId = Integer.parseInt(request.getParameter("id"));
 		ArrayList<Produto> produtosCarrinho = (ArrayList) request.getSession().getAttribute("carrinho");
 		
-		ProdutoDAO produtoDAO = new ProdutoDAO();
+		ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
 		Produto produto = produtoDAO.listById(produtoId);
 
 		if (produtosCarrinho != null) {

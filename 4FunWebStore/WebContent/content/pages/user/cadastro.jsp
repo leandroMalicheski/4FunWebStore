@@ -21,15 +21,16 @@
 		</div>
 		<%}%>
 		<div class="row panel">
-			<form role="form">
-				<input type="text" class="form-control" id="nome" placeholder="Nome" required>
-				<input type="text" class="form-control" id="login" placeholder="Login" required>
-			  	<input type="password" class="form-control" id="senha" placeholder="Senha" required>
-			  	<input type="email" class="form-control" id="email" placeholder="Email" required>
+			<form method="POST" action="/4FunWebStore/usuarioServlet" role="form">
+				<input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+				<input type="text" class="form-control" id="login" name="login" placeholder="Login" required>
+			  	<input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+			  	<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
 				<div class="form-control">
 					<label class="radio-inline"><input type="radio" name="optradio">Masculino</label>
 					<label class="radio-inline"><input type="radio" name="optradio">Feminino</label>
 				</div>
+				<input type="hidden" name="action" value="add">
 				<button type="submit" class="btn btn-default btn-block my-btn">Cadastrar</button>
 			</form>
 	    </div>

@@ -31,22 +31,38 @@ public class UsuarioServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
+		
 		if ((action != null) && (action.equalsIgnoreCase("login"))) {
-			String login = (String) request.getParameter("login");
-			String senha = (String) request.getParameter("senha");
-			UsuarioDAO usuarioDAO = new UsuarioDAO();
+			
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
 			Usuario usuario = usuarioDAO.login(login,senha);
+			
 			if(usuario != null){
 				request.getSession().setAttribute("usuario", usuario);
 				request.getSession().setAttribute("login", "Y");
 			}else{
-				request.setAttribute("loginError", "Login ou Senha incorretos!");
+				request.setAttribute("loginError", "Login ou Senha incorreto(s)!");
 			}
+			
 			request.getRequestDispatcher("content/pages/user/conta.jsp").forward(request, response);
+		
 		} else if(action !=null && action.equals("logout")){
+			
 			request.getSession().setAttribute("usuario", null);
 			request.getSession().setAttribute("login", null);
 			request.getRequestDispatcher("content/pages/user/conta.jsp").forward(request, response);
+		
+		} else if(action !=null && action.equals("add")){
+			String nome = request.getParameter("nome");
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			String email = request.getParameter("email");
+			String sexo = request.getParameter("optradio");
+			UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+			usuarioDAO.add(new Usuario(login,senha,nome,email,sexo));
+			
 		}
 	}
 
