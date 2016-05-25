@@ -32,7 +32,7 @@
 	    <div class="col-sm-4">
 	      <div class="panel panel-default my-panel" >
 	        <div class="panel-heading"><%=produto.getName()%></div>
-	        <div class="panel-body"><img src=<%=produto.getCaminhoImagem() %> class="img-responsive" style="width:100%" alt="Image"></div>
+	        <div class="panel-body"><img src=/4FunWebStore/<%=produto.getCaminhoImagem() %> class="img-responsive" style="width:100%" alt="Image"></div>
 	        <div class="panel-footer">
 	        	<span class="footer-text"><%=produto.getValor()%></span>
 	        	<button type="button" class="btn btn-block my-btn">

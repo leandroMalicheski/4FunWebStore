@@ -1,3 +1,4 @@
+<%@page import="br.com.fourfungames.dao.ProdutoDAO"%>
 <%@page import="org.omg.PortableServer.POA"%>
 <%@page import="br.com.fourfungames.model.Produto"%>
 <%@page import="java.util.ArrayList"%>
@@ -24,9 +25,15 @@
 			<strong><span class="glyphicon glyphicon-ok"></span> Produto Removido!</strong>
 		</div>
 		<%}%>
+		<% if(request.getAttribute("produtoAtualizado") != null){ %>
+		<div class="alert alert-success">
+			<strong><span class="glyphicon glyphicon-ok"></span> Produto Alterado!</strong>
+		</div>
+		<%}%>
+		
 		<div class="row panel">
-		<% if(session.getAttribute("produtos") != null){
-			ArrayList<Produto> listaProdutos = (ArrayList<Produto>) request.getSession().getAttribute("produtos");				
+		<% if(ProdutoDAO.getInstance().list() != null){
+			ArrayList<Produto> listaProdutos = ProdutoDAO.getInstance().list();				
 		%>
 		<table class="table table-striped" style="border: solid; border-color: #ddd;">
 			<thead>
@@ -44,8 +51,8 @@
 					<td><img class="table-image" src="/4FunWebStore/<%=produto.getCaminhoImagem()%>"/> </td>
 					<td style="vertical-align: middle;"><%=produto.getId()%></td>
 					<td style="vertical-align: middle;"><%=produto.getName()%></td>
-					<td style="text-align: center;vertical-align: middle;"><a href="/Cadastro1.1/editarCrudServlet?id=<%=produto.getId()%>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-					<td style="text-align: center;vertical-align: middle;"><a href="/Cadastro1.1/manipulaCrudServlet?id=<%=produto.getId()%>&action='excluir'"><span class="glyphicon glyphicon-remove"></span></a></td>
+					<td style="text-align: center;vertical-align: middle;"><a href="/4FunWebStore/produtoServlet?id=<%=produto.getId()%>&action=editar"><span class="glyphicon glyphicon-pencil"></span></a></td>
+					<td style="text-align: center;vertical-align: middle;"><a href="/4FunWebStore/produtoServlet?id=<%=produto.getId()%>&action=excluir"><span class="glyphicon glyphicon-remove"></span></a></td>
 				</tr>
 		<%}%>
 			</tbody>

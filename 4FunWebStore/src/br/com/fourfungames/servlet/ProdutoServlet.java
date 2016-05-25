@@ -1,6 +1,7 @@
 package br.com.fourfungames.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,7 +36,32 @@ public class ProdutoServlet extends HttpServlet {
 			addProduto(request);
 			request.setAttribute("produtoCadastrado", Integer.valueOf(0));
 			request.getRequestDispatcher("content/pages/product/cadastroProd.jsp").forward(request, response);
+		}else if(action != null && action.equalsIgnoreCase("excluir")){
+			excluirProduto(request, Integer.valueOf(request.getParameter("id")));
+			request.setAttribute("produtoRemovido", "Y");
+			request.getRequestDispatcher("content/pages/product/editarProduto.jsp").forward(request, response);
+		}else if(action != null && action.equalsIgnoreCase("editar")){
+			Produto produto = ProdutoDAO.getInstance().listById(Integer.valueOf(request.getParameter("id")));
+			request.setAttribute("produto", produto);
+			request.getRequestDispatcher("content/pages/product/cadastroProd.jsp").forward(request, response);
+		}else if(action != null && action.equalsIgnoreCase("salvar")){
+			String titulo = request.getParameter("titulo");
+			double valor = Double.valueOf(request.getParameter("valor"));
+			
+			Produto produto = ProdutoDAO.getInstance().listById(Integer.valueOf(request.getParameter("id")));
+			produto.setName(titulo);
+			produto.setValor(valor);
+			
+			ProdutoDAO.getInstance().update(produto);
+			request.setAttribute("produtoAtualizado", "Y");
+			request.getRequestDispatcher("content/pages/product/editarProduto.jsp").forward(request, response);
 		}
+		
+	}
+
+	private void excluirProduto(HttpServletRequest request, int id) {
+		ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
+		produtoDAO.remove(id);
 		
 	}
 

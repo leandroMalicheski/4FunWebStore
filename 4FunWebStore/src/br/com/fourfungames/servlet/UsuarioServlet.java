@@ -61,8 +61,9 @@ public class UsuarioServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String sexo = request.getParameter("optradio");
 			UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-			usuarioDAO.add(new Usuario(login,senha,nome,email,sexo));
-			
+			usuarioDAO.add(new Usuario(login,senha,nome,email,sexo));	
+			request.setAttribute("cadastroFlag", "Y");
+			request.getRequestDispatcher("content/pages/user/cadastro.jsp").forward(request, response);
 		}
 	}
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="br.com.fourfungames.model.Produto"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,6 +24,7 @@
 		<%}%>
 	
 		<div class="row panel">
+		<%if(request.getAttribute("produto") == null){ %>
 			<form method="POST" action="/4FunWebStore/produtoServlet" role="form">
 				<div class="input-group">
 				  <span class="input-group-addon my-addon" id="tituloLabel">Titulo</span>
@@ -33,7 +35,7 @@
 				  <input id="file" type="file" class="form-control my-input" aria-describedby="fileLabel">
 				</div>
 				<div class="input-group">
-				  <span class="input-group-addon my-addon" id="fileLabel"><input type="radio" name="imagemg" id="imagemg" value="/4FunWebStore/content/images/capas/default.png"></span>
+				  <span class="input-group-addon my-addon" id="fileLabel"><input type="radio" name="imagemg" id="imagemg" value="content/images/capas/default.png"></span>
 				  <span class="form-control my-input" aria-describedby="fileLabel">Utilizar a Imagem Generica</span>
 				</div>					
 				<div class="input-group">
@@ -43,6 +45,23 @@
 				<input type="hidden" name="action" value="add">
 				<button type="submit" class="btn btn-default btn-block my-btn">Cadastrar</button>
 			</form>
+			<%}else{ 
+				Produto produto = (Produto) request.getAttribute("produto");
+			%>
+			<form method="POST" action="/4FunWebStore/produtoServlet" role="form">
+				<div class="input-group">
+				  <span class="input-group-addon my-addon" id="tituloLabel">Titulo</span>
+				  <input id="titulo" name="titulo" type="text" class="form-control my-input" value=<%= produto.getName() %> aria-describedby="tituloLabel" required>
+				</div>				
+				<div class="input-group">
+				  <span class="input-group-addon my-addon" id="valorLabel">Valor R$</span>
+				  <input id="valor" name="valor" type="number" step="0.01" class="form-control my-input" value=<%= produto.getValor() %> aria-describedby="valorLabel" required>
+				</div><br>
+				<input type="hidden" name="action" value="salvar">
+				<input type="hidden" name="id" value=<%=produto.getId()%>>
+				<button type="submit" class="btn btn-default btn-block my-btn">Salvar</button>
+			</form>
+			<%} %>
 	    </div>
 	</div>
 	<span class="col-sm-3"></span>

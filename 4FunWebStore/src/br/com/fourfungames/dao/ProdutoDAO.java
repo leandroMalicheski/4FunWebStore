@@ -80,4 +80,49 @@ public class ProdutoDAO {
 			this.listaProdutos.add(produto);			
 		}		
 	}
+
+	public void remove(int id) {
+		int index = 0;
+		if(listaProdutos == null){
+			this.listaProdutos = createList();
+			
+			for (int i = 0; i < listaProdutos.size(); i++) {
+				if(listaProdutos.get(i).getId() == id){
+					index = i;
+				}
+			}
+			listaProdutos.remove(index);
+		}else{
+			for (int i = 0; i < listaProdutos.size(); i++) {
+				if(listaProdutos.get(i).getId() == id){
+					index = i;
+				}
+			}
+			listaProdutos.remove(index);
+		}		
+	}
+
+	public void update(Produto produto) {
+		int index = 0;
+		if(listaProdutos == null){
+			this.listaProdutos = createList();
+			
+			for (int i = 0; i < listaProdutos.size(); i++) {
+				if(listaProdutos.get(i).getId() == produto.getId()){
+					index = i;
+				}
+			}
+			listaProdutos.remove(index);
+			listaProdutos.add(produto);
+		}else{
+			for (int i = 0; i < listaProdutos.size(); i++) {
+				if(listaProdutos.get(i).getId() == produto.getId()){
+					index = i;
+				}
+			}
+			listaProdutos.remove(index);
+			listaProdutos.add(produto);
+		}
+		
+	}
 }
