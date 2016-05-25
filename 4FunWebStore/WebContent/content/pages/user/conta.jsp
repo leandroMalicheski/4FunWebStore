@@ -32,9 +32,12 @@
 			   		<form action="/4FunWebStore/usuarioServlet" method="POST">
 				  		<input type="text" class="form-control" name="login" id="login" placeholder="Login">		
 				  		<input type="password" class="form-control" name="senha" id="senha" placeholder="Senha">
+				  		<br>
 				  		<input type="hidden" name="action" value="login">
+				  		<input type="hidden" name="destino" value="conta">
 						<button type="submit" class="btn btn-default btn-block my-btn">Login</button>
 					</form>
+					<br>
 					<a type="button" class="btn btn-default btn-block my-btn-dark" href="cadastro.jsp">Cadastrar</a>
 		    	</div>
 		    </div>

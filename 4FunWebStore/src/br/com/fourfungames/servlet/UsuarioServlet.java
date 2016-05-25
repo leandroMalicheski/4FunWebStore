@@ -1,77 +1,88 @@
 package br.com.fourfungames.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import br.com.fourfungames.dao.UsuarioDAO;
 import br.com.fourfungames.model.Usuario;
 
-/**
- * Servlet implementation class UsuarioServlet
- */
 @WebServlet("/usuarioServlet")
 public class UsuarioServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public UsuarioServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
-		
-		if ((action != null) && (action.equalsIgnoreCase("login"))) {
+		if(action != null){
+			switch (action) {
+			case "login":
+				login(request);
+				
+				if(request.getParameter("destino").equals("conta")){
+					request.getRequestDispatcher("content/pages/user/conta.jsp").forward(request, response);
+				}else{
+					request.getRequestDispatcher("content/pages/product/finalizarCompra.jsp").forward(request, response);
+				}
+				break;
+				
+			case "logout":
+				request.getSession().setAttribute("usuario", null);
+				request.getSession().setAttribute("login", null);
+				request.getRequestDispatcher("content/pages/user/conta.jsp").forward(request, response);
+				break;
 			
-			String login = request.getParameter("login");
-			String senha = request.getParameter("senha");
-			UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-			Usuario usuario = usuarioDAO.login(login,senha);
-			
-			if(usuario != null){
-				request.getSession().setAttribute("usuario", usuario);
-				request.getSession().setAttribute("login", "Y");
-			}else{
-				request.setAttribute("loginError", "Login ou Senha incorreto(s)!");
+			case "add":
+				add(request);	
+				request.setAttribute("cadastroFlag", "Y");
+				request.getRequestDispatcher("content/pages/user/cadastro.jsp").forward(request, response);
+				break;
+
+			default:
+				request.setAttribute("erro", "Action não Mapeada");
+				request.getRequestDispatcher("content/pages/error.jsp").forward(request, response);
+				break;
 			}
 			
-			request.getRequestDispatcher("content/pages/user/conta.jsp").forward(request, response);
-		
-		} else if(action !=null && action.equals("logout")){
-			
-			request.getSession().setAttribute("usuario", null);
-			request.getSession().setAttribute("login", null);
-			request.getRequestDispatcher("content/pages/user/conta.jsp").forward(request, response);
-		
-		} else if(action !=null && action.equals("add")){
-			String nome = request.getParameter("nome");
-			String login = request.getParameter("login");
-			String senha = request.getParameter("senha");
-			String email = request.getParameter("email");
-			String sexo = request.getParameter("optradio");
-			UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-			usuarioDAO.add(new Usuario(login,senha,nome,email,sexo));	
-			request.setAttribute("cadastroFlag", "Y");
-			request.getRequestDispatcher("content/pages/user/cadastro.jsp").forward(request, response);
+		}else{
+			request.setAttribute("erro", "Nenhuma Action foi Recebida");
+			request.getRequestDispatcher("content/pages/error.jsp").forward(request, response);
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	private void add(HttpServletRequest request) {
+		String nome = request.getParameter("nome");
+		String login = request.getParameter("login");
+		String senha = request.getParameter("senha");
+		String email = request.getParameter("email");
+		String sexo = request.getParameter("optradio");
+		
+		UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+		usuarioDAO.add(new Usuario(login,senha,nome,email,sexo));
+		
+	}
+
+	private void login(HttpServletRequest request) {
+		String login = request.getParameter("login");
+		String senha = request.getParameter("senha");
+		Usuario usuario = UsuarioDAO.getInstance().login(login,senha);
+		
+		if(usuario != null){
+			request.getSession().setAttribute("usuario", usuario);
+			request.getSession().setAttribute("login", "Y");
+		}else{
+			request.setAttribute("loginError", "Login ou Senha incorreto(s)!");
+		}		
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -1,6 +1,7 @@
 package br.com.fourfungames.model;
 	
 public class Usuario	{
+	int id;
 	String login;
 	String senha;
 	String perfil;
@@ -8,7 +9,10 @@ public class Usuario	{
 	String email;
 	String sexo;
 	
-	public Usuario(String login, String senha, String nome, String email, String sexo){
+	public Usuario(){}
+	
+	public Usuario(int id, String nome, String login, String perfil, String email, String senha, String sexo) {
+		this.id = id;
 		this.login = login;
 		this.senha = senha;
 		this.perfil = "default"; 
@@ -16,9 +20,7 @@ public class Usuario	{
 		this.email= email;
 		this.sexo = sexo;
 	}
-	
-	public Usuario(){}
-	
+
 	public String getLogin() {
 		return this.login;
 	}

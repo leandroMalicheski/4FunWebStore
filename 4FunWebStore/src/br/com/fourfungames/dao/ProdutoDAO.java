@@ -1,14 +1,24 @@
 package br.com.fourfungames.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.com.fourfungames.dao.connection.ConnectionDAO;
 import br.com.fourfungames.model.Produto;
 
 public class ProdutoDAO {
 	
 	public static ProdutoDAO instance;
-	private ArrayList<Produto> listaProdutos;
+	public static final String SELECT_ALL_PRODUTOS = "SELECT * FROM PRODUTO";
+	public static final String SELECT_PRODUTO_BY_ID = "SELECT * FROM PRODUTO WHERE ID=?";
+	public static final String INSERT_PRODUTO = "INSERT INTO PRODUTO(nome,caminhoImagem,valor) VALUES (?,?,?)";
+	public static final String DELETE_PRODUTO_BY_ID = "DELETE FROM PRODUTO WHERE ID=?";
+	public static final String UPDATE_PRODUTO_BY_ID = "UPDATE PRODUTO SET nome=?,valor=? WHERE id=?";
 	
+	private Connection conn;
 	private ProdutoDAO(){}
 	
 	public static ProdutoDAO getInstance(){
@@ -19,110 +29,104 @@ public class ProdutoDAO {
 	}
 	
 	public ArrayList<Produto> list() {
+		if(this.conn == null){
+			this.conn = ConnectionDAO.getInstance().getConnection();
+		}
 		
-		if(listaProdutos == null){
-			listaProdutos = createList();
+		ArrayList<Produto> listaProdutos = new ArrayList<Produto>();
+		try {
+			PreparedStatement preparedStatement = this.conn.prepareStatement(SELECT_ALL_PRODUTOS);
+			ResultSet result = preparedStatement.executeQuery();
+			while(result.next()){
+				String nome = result.getString("nome");
+				int id = result.getInt("id");
+				String caminhoImagem = result.getString("caminhoImagem");
+				double valor = result.getDouble("valor");
+				listaProdutos.add(new Produto(id,nome,caminhoImagem,valor));				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
-		return listaProdutos;
-	}
-	
-	private ArrayList<Produto> createList() {
-		Produto produto = new Produto();
-		produto.setId(0);
-		produto.setName("Battlefield Hardline");
-		produto.setDescricao("Jogo de Tiro");
-		produto.setValor(230.0D);
-		produto.setCaminhoImagem("content/images/capas/BFHardline.png");
-
-		Produto produto1 = new Produto();
-		produto1.setId(1);
-		produto1.setName("Assasin's Creed Black Flag");
-		produto1.setDescricao("Jogo de Aventura");
-		produto1.setValor(180.0D);
-		produto1.setCaminhoImagem("content/images/capas/BlackFlag.png");
-
-		Produto produto2 = new Produto();
-		produto2.setId(2);
-		produto2.setName("Battlefield Hardline");
-		produto2.setDescricao("Jogo de Tiro");
-		produto2.setValor(230.0D);
-		produto2.setCaminhoImagem("content/images/capas/BFHardline.png");
-
-		ArrayList<Produto> listaProdutos = new ArrayList<Produto>();
-		listaProdutos.add(produto);
-		listaProdutos.add(produto1);
-		listaProdutos.add(produto2);
 		return listaProdutos;
 	}
 
 	public Produto listById(int id){
-		if(listaProdutos != null){
-			Produto result = null;
-			for (Produto produto : listaProdutos) {
-				if (produto.getId() == id) {
-					result = produto;
-				}
-			}
-			return result;
-		}else{
-			this.listaProdutos = createList();
-			return listById(id);
+		if(this.conn == null){
+			this.conn = ConnectionDAO.getInstance().getConnection();
 		}
+		
+		Produto produto = null;
+		try {
+			PreparedStatement preparedStatement = this.conn.prepareStatement(SELECT_PRODUTO_BY_ID);
+			preparedStatement.setInt(1, id);
+			ResultSet result = preparedStatement.executeQuery();
+			
+			while(result.next()){
+				String nome = result.getString("nome");
+				String caminhoImagem = result.getString("caminhoImagem");
+				double valor = result.getDouble("valor");
+				produto = new Produto(id,nome,caminhoImagem,valor);				
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return produto;
 	}
 
 
 	public void add(Produto produto) {
-		if(listaProdutos == null){
-			this.listaProdutos = createList();
-			this.listaProdutos.add(produto);	
-		}else{
-			this.listaProdutos.add(produto);			
-		}		
+		if(this.conn == null){
+			this.conn = ConnectionDAO.getInstance().getConnection();
+		}
+		
+		try {
+			PreparedStatement preparedStatement = this.conn.prepareStatement(INSERT_PRODUTO);
+			preparedStatement.setString(1, produto.getName());
+			preparedStatement.setString(2, produto.getCaminhoImagem());
+			preparedStatement.setDouble(3, produto.getValor());
+			
+			preparedStatement.execute();
+						
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void remove(int id) {
-		int index = 0;
-		if(listaProdutos == null){
-			this.listaProdutos = createList();
+		if(this.conn == null){
+			this.conn = ConnectionDAO.getInstance().getConnection();
+		}
+		
+		try {
+			PreparedStatement preparedStatement = this.conn.prepareStatement(DELETE_PRODUTO_BY_ID);
+			preparedStatement.setInt(1, id);
 			
-			for (int i = 0; i < listaProdutos.size(); i++) {
-				if(listaProdutos.get(i).getId() == id){
-					index = i;
-				}
-			}
-			listaProdutos.remove(index);
-		}else{
-			for (int i = 0; i < listaProdutos.size(); i++) {
-				if(listaProdutos.get(i).getId() == id){
-					index = i;
-				}
-			}
-			listaProdutos.remove(index);
-		}		
+			preparedStatement.execute();
+						
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
 	}
 
 	public void update(Produto produto) {
-		int index = 0;
-		if(listaProdutos == null){
-			this.listaProdutos = createList();
-			
-			for (int i = 0; i < listaProdutos.size(); i++) {
-				if(listaProdutos.get(i).getId() == produto.getId()){
-					index = i;
-				}
-			}
-			listaProdutos.remove(index);
-			listaProdutos.add(produto);
-		}else{
-			for (int i = 0; i < listaProdutos.size(); i++) {
-				if(listaProdutos.get(i).getId() == produto.getId()){
-					index = i;
-				}
-			}
-			listaProdutos.remove(index);
-			listaProdutos.add(produto);
+		if(this.conn == null){
+			this.conn = ConnectionDAO.getInstance().getConnection();
 		}
 		
+		try {
+			PreparedStatement preparedStatement = this.conn.prepareStatement(UPDATE_PRODUTO_BY_ID);
+			preparedStatement.setString(1,produto.getName());
+			preparedStatement.setDouble(2,produto.getValor());
+			preparedStatement.setInt(3,produto.getId());
+			
+			preparedStatement.execute();
+						
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}			
 	}
 }

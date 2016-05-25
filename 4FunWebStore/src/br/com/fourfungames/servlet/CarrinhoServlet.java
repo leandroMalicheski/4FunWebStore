@@ -18,25 +18,51 @@ public class CarrinhoServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		String action = request.getParameter("action");
-		if ((action != null) && (action.equalsIgnoreCase("add"))) {
-			addProduto(request);
-			request.setAttribute("produtoAdded", Integer.valueOf(0));
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
-		} else if ((action != null) && (action.equalsIgnoreCase("excluir"))) {
-			removeProduto(request);
-			request.setAttribute("produtoRemovido", Integer.valueOf(0));
-			request.getRequestDispatcher("content/pages/user/carrinho.jsp").forward(request, response);
+		if (action != null) {
+			switch (action) {
+			case "add":
+				addProduto(request);
+				request.setAttribute("produtoAdded", Integer.valueOf(0));
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+				break;
+			case "excluir":
+				removeProduto(request);
+				request.setAttribute("produtoRemovido", Integer.valueOf(0));
+				request.getRequestDispatcher("content/pages/user/carrinho.jsp").forward(request, response);
+				break;
+
+			case "comprar":
+				
+				if(request.getParameter("destino").equals("index")){
+					request.getSession().setAttribute("carrinho",null);	
+					request.setAttribute("compraFinalizada", "Y");
+					request.getRequestDispatcher("/index.jsp").forward(request, response);
+				}else{
+					request.setAttribute("favorLogin", "Y");
+					request.getRequestDispatcher("content/pages/product/finalizarCompra.jsp").forward(request, response);
+				}
+				break;
+				
+			default:
+				request.setAttribute("erro", "Action não Mapeada");
+				request.getRequestDispatcher("content/pages/error.jsp").forward(request, response);
+				break;
+			}
+
+		} else {
+			request.setAttribute("erro", "Nenhuma Action foi Recebida");
+			request.getRequestDispatcher("content/pages/error.jsp").forward(request, response);
 		}
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addProduto(HttpServletRequest request) {
-		
+
 		int produtoId = Integer.parseInt(request.getParameter("id"));
 		ArrayList<Produto> produtosCarrinho = (ArrayList) request.getSession().getAttribute("carrinho");
-		
+
 		ProdutoDAO produtoDAO = ProdutoDAO.getInstance();
 		Produto produto = produtoDAO.listById(produtoId);
 
@@ -48,7 +74,6 @@ public class CarrinhoServlet extends HttpServlet {
 		}
 		request.getSession().setAttribute("carrinho", produtosCarrinho);
 	}
-
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void removeProduto(HttpServletRequest request) {

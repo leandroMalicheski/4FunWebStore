@@ -4,14 +4,18 @@ public class Produto {
 	int id;
 	double valor;
 	String name;
-	String descricao;
 	String caminhoImagem;
 
-	public Produto(String name, String descricao, String caminhoImagem, double valor){
+	public Produto(int id, String name,String caminhoImagem, double valor){
+		this.id = id;
 		this.valor = valor;
 		this.name = name;
 		this.caminhoImagem = caminhoImagem;
-		this.descricao = descricao;
+	}
+	public Produto(String name,String caminhoImagem, double valor){
+		this.valor = valor;
+		this.name = name;
+		this.caminhoImagem = caminhoImagem;
 	}
 	
 	public Produto(){}
@@ -38,14 +42,6 @@ public class Produto {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescricao() {
-		return this.descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public String getCaminhoImagem() {

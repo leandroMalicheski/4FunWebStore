@@ -57,7 +57,7 @@
 			Total: <%= total %>
 		</div>
 		<div class="col-sm-12">
-			<a href="#" class="btn btn-default btn-block my-btn">Finalizar compra</a>
+			<a href="../product/finalizarCompra.jsp" class="btn btn-default btn-block my-btn">Finalizar compra</a>
 		</div>
 		<%}else{%>
 			<div class="alert alert-danger">

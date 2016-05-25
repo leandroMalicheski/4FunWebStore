@@ -27,6 +27,10 @@
 		<div class="alert alert-success">
   			<strong>Adicionado!</strong> Produto adicionado ao seu carrinho.
 		</div>
+	<%} else if(request.getAttribute("compraFinalizada") != null){ %>
+		<div class="alert alert-success">
+  			<strong>Compra Finalizada!</strong> Obrigado por comprar na 4FUN.
+		</div>
 	<%} %>
 	<% for(Produto produto : listaProdutos){%>
 	    <div class="col-sm-4">
