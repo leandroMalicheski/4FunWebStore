@@ -65,7 +65,7 @@ public class UsuarioServlet extends HttpServlet {
 		String sexo = request.getParameter("optradio");
 		
 		UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-		usuarioDAO.add(new Usuario(login,senha,nome,email,sexo));
+		usuarioDAO.add(new Usuario(nome,login,"default",email,senha,sexo));
 		
 	}
 

@@ -7,16 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.fourfungames.dao.connection.ConnectionDAO;
-import br.com.fourfungames.model.Produto;
 import br.com.fourfungames.model.Usuario;
 
 public class UsuarioDAO {
 	public static UsuarioDAO instance;
 	public static final String SELECT_ALL_USUARIO = "SELECT * FROM USUARIO";
 	public static final String SELECT_USUARIO_BY_ID = "SELECT * FROM USUARIO WHERE ID=?";
-	public static final String INSERT_PRODUTO = "INSERT INTO PRODUTO(nome,caminhoImagem,valor) VALUES (?,?,?)";
-	public static final String DELETE_PRODUTO_BY_ID = "DELETE FROM PRODUTO WHERE ID=?";
-	public static final String UPDATE_PRODUTO_BY_ID = "UPDATE PRODUTO SET nome=?,valor=? WHERE id=?";
+	public static final String INSERT_USUARIO = "INSERT INTO USUARIO(nome,login,perfil,email,senha,sexo) VALUES (?,?,?,?,?,?)";
 	
 	private Connection conn;
 	private UsuarioDAO(){}
@@ -62,23 +59,25 @@ public class UsuarioDAO {
 	}
 
 	public void add(Usuario usuario) {
-		if(this.usuarios != null){
-			this.usuarios.add(usuario);
-		}else{
-			this.usuarios = gerarUsuarios();
-			this.usuarios.add(usuario);
+		
+		if(this.conn == null){
+			this.conn = ConnectionDAO.getInstance().getConnection();
 		}
 		
-	}
-
-	private ArrayList<Usuario> gerarUsuarios() {
-		Usuario usuario = new Usuario("LeandroMacedo","MinhaSenha26","Leandro","leandro.malicheski@gmail.com","Masculino");
-		usuario.setPerfil("adm");
+		try {
+			PreparedStatement preparedStatement = this.conn.prepareStatement(INSERT_USUARIO);
+			preparedStatement.setString(1, usuario.getNome());
+			preparedStatement.setString(2, usuario.getLogin());
+			preparedStatement.setString(3, usuario.getPerfil());
+			preparedStatement.setString(4, usuario.getEmail());
+			preparedStatement.setString(5, usuario.getSenha());
+			preparedStatement.setString(6, usuario.getSexo());
+			preparedStatement.execute();
+						
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-		usuarios.add(usuario);
-		return usuarios;
-	}
-	
+	}	
 	
 }

@@ -11,11 +11,20 @@ public class Usuario	{
 	
 	public Usuario(){}
 	
-	public Usuario(int id, String nome, String login, String perfil, String email, String senha, String sexo) {
-		this.id = id;
+	public Usuario(String nome, String login, String perfil, String email, String senha, String sexo) {
 		this.login = login;
 		this.senha = senha;
 		this.perfil = "default"; 
+		this.nome = nome;
+		this.email= email;
+		this.sexo = sexo;
+	}
+	
+	public Usuario(int id,String nome, String login, String perfil, String email, String senha, String sexo) {
+		this.id = id;
+		this.login = login;
+		this.senha = senha;
+		this.perfil = perfil; 
 		this.nome = nome;
 		this.email= email;
 		this.sexo = sexo;
